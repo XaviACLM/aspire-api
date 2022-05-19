@@ -17,7 +17,7 @@ In AspireAPI.Locale, go to the last line, "Locale = EuropeLocale", and change it
 
 This is one of the two things you'll need to initialize an Aspire object (notice how in main.py it is loaded from an external file). To find your id, open the spreadsheet on any browser, and look at the url. It should look something like this:
 
-https://docs.google.com/spreadsheets/d/<spreadsheet-id>/edit#gid=0
+https://docs.google.com/spreadsheets/d/<spreadsheet-id\>/edit#gid=0
 
 Maybe not exactly for that last part, but in any case it's pretty easy to distinguish the id-looking string of characters.
   
