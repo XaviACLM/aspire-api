@@ -19,12 +19,14 @@ class ThrottledSpreadsheetInterface(AspireSpreadsheetInterface):
         :param credentials: a google.oauth2.credentials.Credentials object.
                             Refer to google documentation for how to generate these.
         """
+
+        if not isinstance(time_horizon, TimeDelta):
+            time_horizon = TimeDelta(seconds=time_horizon)
+
         self._interface = interface
         self.time_horizon = time_horizon
         self.max_queries = max_queries
 
-        if not isinstance(time_horizon, TimeDelta):
-            time_horizon = TimeDelta(seconds=time_horizon)
         self._query_times = [DateTime.now() - time_horizon for _ in range(max_queries)]
         self._query_pointer = 0
 

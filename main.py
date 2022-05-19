@@ -19,7 +19,7 @@ my_savings_account="FAKEBANK2"
 
 gsapi = GoogleSheetsInterface(sheet_id, creds)
 tgsapi = ThrottledSpreadsheetInterface(60, 60, gsapi)
-aspire = Aspire(gsapi, ensure_healthy=False)
+aspire = Aspire(tgsapi, ensure_healthy=False)
 
 budgeted_categories = [c for c in aspire.categories if aspire.category_amount(c) is not None]
 
