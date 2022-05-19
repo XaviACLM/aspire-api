@@ -24,7 +24,6 @@ class Aspire:
         self.configuration_sheetname = configuration_sheetname
 
         self._ensure_healthy = ensure_healthy
-        # TODO: verify health for config, i.e., stars in the right places and such
 
         self._transactions = None
         self._category_transfers = None

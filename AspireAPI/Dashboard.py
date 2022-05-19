@@ -10,7 +10,7 @@ class Dashboard:
         self._category_or_group_index = category_or_group_index
 
     def balance(self, account: str) -> float:
-        data = self._sheet.get("C{0}:D{0}".format(8+2*self._account_index(account)))[0][0]
+        data = self._sheet.get("C{0}:D{0}".format(8+2*self._account_index[account]))[0][0]
         return Locale.parse_currency(data)
 
     def available_to_budget(self) -> float:

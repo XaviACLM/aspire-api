@@ -28,9 +28,9 @@ def row_to_category_transfer(row: list) -> Optional[CategoryTransfer]:
     return CategoryTransfer(date, amount, from_, to, memo, status)
 
 
-def category_transfer_to_row(transaction: CategoryTransfer) -> list:
-    if transaction is None: return []
-    date, amount, from_, to, memo, status = transaction
+def category_transfer_to_row(transfer: CategoryTransfer) -> list:
+    if transfer is None: return []
+    date, amount, from_, to, memo, status = transfer
     date = Locale.format_date(date)
     amount = Locale.format_currency(amount)
     status = status.value
@@ -122,31 +122,31 @@ class CategoryTransfers:
             ts.extend([None] * (row_index_2 - row_index_1 + 1 - len(ts)))
         return ts
 
-    def _set(self, index: int, transaction: CategoryTransfer, ensure_no_overwrite=True):
+    def _set(self, index: int, transfer: CategoryTransfer, ensure_no_overwrite=True):
         if ensure_no_overwrite:
             if self._generic_get(index) is not None:
                 raise Exception(
                     "Attempted to overwrite in transactions, at index"
-                    " {}\n\tOriginal data:{}\n\tWritten data:{}".format(index, self[index], transaction)
+                    " {}\n\tOriginal data:{}\n\tWritten data:{}".format(index, self[index], transfer)
                 )
 
         row_index = self._localize_index(index)
-        data = [category_transfer_to_row(transaction)]
+        data = [category_transfer_to_row(transfer)]
         self._sheet.set("B{0}:G{0}".format(row_index), data)
 
-    def _batch_set(self, start_index: int, transactions: List[CategoryTransfer], ensure_no_overwrite=True):
+    def _batch_set(self, start_index: int, transfers: List[CategoryTransfer], ensure_no_overwrite=True):
         if ensure_no_overwrite:
-            end_index = start_index + len(transactions) - 1
-            if self._generic_batch_get(start_index, end_index) != [None]*len(transactions):
+            end_index = start_index + len(transfers) - 1
+            if self._generic_batch_get(start_index, end_index) != [None]*len(transfers):
                 raise Exception(
                     "Attempted to overwrite in transactions,"
                     " from indices {} to {}".format(start_index, end_index)
                 )
 
         row_index_1 = self._localize_index(start_index)
-        row_index_2 = row_index_1+len(transactions)-1
+        row_index_2 = row_index_1 + len(transfers) - 1
 
-        data = list(map(category_transfer_to_row, transactions))
+        data = list(map(category_transfer_to_row, transfers))
         self._sheet.set("B{}:G{}".format(row_index_1, row_index_2), data)
 
     def _clear(self, index: int, ensure_nonempty=True):
@@ -179,13 +179,13 @@ class CategoryTransfers:
             return ts
         return self._generic_batch_get(first_index, last_index)
 
-    def push(self, transaction: CategoryTransfer):
-        self._set(self.first_empty_index, transaction, ensure_no_overwrite=False)
+    def push(self, transfer: CategoryTransfer):
+        self._set(self.first_empty_index, transfer, ensure_no_overwrite=False)
         self.first_empty_index += 1
 
-    def batch_push(self, transactions: List[CategoryTransfer]):
-        self._batch_set(self.first_empty_index, transactions, ensure_no_overwrite=False)
-        self.first_empty_index += len(transactions)
+    def batch_push(self, transfers: List[CategoryTransfer]):
+        self._batch_set(self.first_empty_index, transfers, ensure_no_overwrite=False)
+        self.first_empty_index += len(transfers)
 
     def pop(self, index: int) -> CategoryTransfer:
         if index >= self.first_empty_index:
@@ -215,32 +215,32 @@ class CategoryTransfers:
         self.first_empty_index -= qt_elements
         return elements
 
-    def insert(self, index: int, transaction: CategoryTransfer):
+    def insert(self, index: int, transfer: CategoryTransfer):
         if index > self.first_empty_index:
             raise Exception("Attempted to insert out of range")
         tail = self.batch_get(index, self.first_empty_index-1)
-        self._set(index, transaction, ensure_no_overwrite=False)
+        self._set(index, transfer, ensure_no_overwrite=False)
         self._batch_set(index+1, tail, ensure_no_overwrite=False)
         self.first_empty_index += 1
 
-    def batch_insert(self, start_index: int, transactions: List[CategoryTransfer]):
+    def batch_insert(self, start_index: int, transfers: List[CategoryTransfer]):
         if start_index > self.first_empty_index:
             raise Exception("Attempted to insert out of range")
         tail = self.batch_get(start_index, self.first_empty_index-1)
-        self._batch_set(start_index, transactions, ensure_no_overwrite=False)
-        self._batch_set(start_index+len(transactions), tail, ensure_no_overwrite=False)
-        self.first_empty_index += len(transactions)
+        self._batch_set(start_index, transfers, ensure_no_overwrite=False)
+        self._batch_set(start_index + len(transfers), tail, ensure_no_overwrite=False)
+        self.first_empty_index += len(transfers)
 
-    def replace(self, index: int, transaction: CategoryTransfer):
+    def replace(self, index: int, transfer: CategoryTransfer):
         if index >= self.first_empty_index:
             raise Exception("Attempted to replace out of range")
-        self._set(index, transaction, ensure_no_overwrite=False)
+        self._set(index, transfer, ensure_no_overwrite=False)
 
-    def batch_replace(self, start_index: int, transactions: List[CategoryTransfer]):
-        end_index = start_index+len(transactions)-1
+    def batch_replace(self, start_index: int, transfers: List[CategoryTransfer]):
+        end_index = start_index + len(transfers) - 1
         if end_index >= self.first_empty_index:
             raise Exception("Attempted to replace out of range")
-        self._batch_set(start_index, transactions, ensure_no_overwrite=False)
+        self._batch_set(start_index, transfers, ensure_no_overwrite=False)
 
     def is_healthy(self, safety_margin=1000):
         all_data = self._generic_batch_get(0, self.first_empty_index-1)

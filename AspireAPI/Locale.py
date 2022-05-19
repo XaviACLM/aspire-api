@@ -1,4 +1,4 @@
-from datetime import datetime as Datetime
+from datetime import datetime as DateTime
 import re
 
 
@@ -13,11 +13,11 @@ class AbstractLocale:
         raise NotImplementedError()
 
     @staticmethod
-    def parse_date(string: str) -> Datetime:
+    def parse_date(string: str) -> DateTime:
         raise NotImplementedError()
 
     @staticmethod
-    def format_date(amount: Datetime) -> str:
+    def format_date(amount: DateTime) -> str:
         raise NotImplementedError()
 
 
@@ -42,14 +42,14 @@ class EuropeLocale(AbstractLocale):
             return "-€{}".format(str(-amount).replace(".", ","))
 
     @staticmethod
-    def parse_date(string: str) -> Datetime:
+    def parse_date(string: str) -> DateTime:
         try:
-            return Datetime.strptime(string, "%d/%m/%Y")
+            return DateTime.strptime(string, "%d/%m/%Y")
         except ValueError:
-            return Datetime.strptime(string, "%d/%m/%y")
+            return DateTime.strptime(string, "%d/%m/%y")
 
     @staticmethod
-    def format_date(date: Datetime) -> str:
+    def format_date(date: DateTime) -> str:
         return date.strftime("%d/%m/%y")
 
 
@@ -74,14 +74,14 @@ class USLocale(AbstractLocale):
             return "-${}".format(str(-amount).replace(".", ","))
 
     @staticmethod
-    def parse_date(string: str) -> Datetime:
+    def parse_date(string: str) -> DateTime:
         try:
-            return Datetime.strptime(string, "%m/%d/%Y")
+            return DateTime.strptime(string, "%m/%d/%Y")
         except ValueError:
-            return Datetime.strptime(string, "%m/%d/%y")
+            return DateTime.strptime(string, "%m/%d/%y")
 
     @staticmethod
-    def format_date(date: Datetime) -> str:
+    def format_date(date: DateTime) -> str:
         return date.strftime("%d/%m/%y")
 
 
@@ -107,14 +107,14 @@ class ChinaLocale(AbstractLocale):
             return "-¥{}".format(str(-amount).replace(".", ","))
 
     @staticmethod
-    def parse_date(string: str) -> Datetime:
+    def parse_date(string: str) -> DateTime:
         try:
-            return Datetime.strptime(string, "%Y/%m/%d")
+            return DateTime.strptime(string, "%Y/%m/%d")
         except ValueError:
-            return Datetime.strptime(string, "%y/%m/%d")
+            return DateTime.strptime(string, "%y/%m/%d")
 
     @staticmethod
-    def format_date(date: Datetime) -> str:
+    def format_date(date: DateTime) -> str:
         return date.strftime("%y/%d/%m")
 
 
