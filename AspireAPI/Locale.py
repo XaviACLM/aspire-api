@@ -93,7 +93,7 @@ class ChinaLocale(AbstractLocale):
     def parse_currency(string: str) -> float:
         if string == "":
             return 0
-        s, i, w = re.match(USLocale.currency_parser, string).groups()
+        s, i, w = re.match(ChinaLocale.currency_parser, string).groups()
         return float("{}{}.{}".format(s, i.replace(".",""), w))
 
     @staticmethod
