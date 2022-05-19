@@ -17,11 +17,7 @@ In AspireAPI.Locale, go to the last line, "Locale = EuropeLocale", and change it
 
 This is one of the two things you'll need to initialize an Aspire object (notice how in main.py it is loaded from an external file). To find your id, open the spreadsheet on any browser, and look at the url. It should look something like this:
 
-https://
-docs.go
-ogle.c
-om/spr
-eadsheets/d/<spreadsheet-id>/edit#gid=0
+https://docs.google.com/spreadsheets/d/<spreadsheet-id>/edit#gid=0
 
 Maybe not exactly for that last part, but in any case it's pretty easy to distinguish the id-looking string of characters.
   
@@ -29,7 +25,7 @@ Maybe not exactly for that last part, but in any case it's pretty easy to distin
   
 I have found this to be a bit fiddly. In any case, follow this tutorial: https://developers.google.com/sheets/api/quickstart/python
   
-Note that, as best as I can tell, your only option if you want to (a) get an oauth2 token and (b) not spend money on it, is to create an app in testing and register yourself as a tester. It's unclear to me if I'm missing something obvious, since it seems that having access to your own spreadsheets should be less convoluted.
+Note that, as best as I can tell, your only option if you want to (a) get an oauth2 token and (b) not spend money on it, is to create an app in testing and register yourself as a tester. I think it's rather likely that I'm missing an obvious alternative, since it seems that having access to your own spreadsheets should be less convoluted.
 
 Also, regarding the code in the example above - this might not be the case for you, but in my case creds.valid always returned false (even for tokens that verifiably worked), which caused the program to always assume that the stored token was invalid and force me through the google permission-granting process again. If this happens to you too, you can circumvent it by checking whether the token works by doing a dummy query (or just not checking at all and hoping that it fails early).
   
