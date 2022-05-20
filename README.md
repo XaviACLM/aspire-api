@@ -49,7 +49,7 @@ Things it *can't* do:
 
 #### The dashboard
 
-is accessed through Aspire.dashboard. It lets you read the balance from your accounts (Aspire.dashboard.balance(account)), the amount that's available to budget and how much you've spent/budgeted this month (Aspire.dashboard.available_to_budget(), .spent_this_month() and .budgeted_this_month()), as well as the amount spend/budgeted/left in the envelope for each category/category group (Aspire.dashboard.activity(), .budgeted(), .available()).
+is accessed through Aspire.dashboard. It lets you read the balance from your accounts (Aspire.dashboard.balance(account)), the amount that's available to budget and how much you've spent/budgeted this month (Aspire.dashboard.available_to_budget(), .spent_this_month() and .budgeted_this_month()), as well as the amount spend/budgeted/left in the envelope for each category/category group (Aspire.dashboard.activity(category), .budgeted(category), .available(category)).
   
 Note that this is always fetched from the spreadsheet every time any of those functions are called - in general (except for the configuration), none of the data of the spreadsheet is ever looked at through a local copy.
   
@@ -81,7 +81,7 @@ Reading the configuration spreadsheet populates a few attributes directly in the
 - Aspire.hidden_categories
 - Aspire.hidden_accounts
   
-These are all rather self-explanatory. they are stored as strings, lists of strings, or floats. Moreover, we have Aspire.categories, a list of category names, and Aspire.category_groups, a dictionary keyed by group names referring to the list of categories in that group. The rest of the data is stored in private, and should be accessed through the methods:
+These are all rather self-explanatory. they are stored as strings, lists of strings, or floats. Moreover, we have Aspire.categories, a list of category names, and Aspire.category_groups, a dictionary keyed by group names referring to the list of categories in that group. The rest of the data about categories should be accessed through the methods:
 
 - Aspire.category_symbol(category)
 - Aspire.category_amount(category)

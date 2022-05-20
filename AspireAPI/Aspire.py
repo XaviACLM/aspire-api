@@ -45,7 +45,7 @@ class Aspire:
             self._category_transfers_sheet = AspireSheetInterface(self.category_transfers_sheetname, self._spreadsheet)
             self._category_transfers = CategoryTransfers(self._category_transfers_sheet)
             if self._ensure_healthy and not self._category_transfers.is_healthy():
-                raise Exception("Transactions sheet is not in the required format")
+                raise Exception("Category transfer sheet is not in the required format")
         return self._category_transfers
 
     @property
